@@ -1,0 +1,89 @@
+# ESI Triage Rules - Version 4 (2012 Edition)
+# Source: AHRQ Publication No. 12-0014
+# Extracted from: docs/esi-handbook-v4.pdf
+#
+# Schema notes:
+# - rules are evaluated in order (Decision A First, then B, then C, then D)
+# - first matching rule wins
+# - fields prefixed 'is_' or 'has_' come from LLM extraction of the complaint
+# - other fields (oxygen_saturation, heart_rate, etc.) come directly from TriageRequest
+
+rules:
+# DESCISION A: Immediate Life-Saving Intervention Required -> ESI 1
+  - rule_id: A1_intubated
+    esi_level: 1
+    decision_point: A
+    category: clinical_condition
+    trigger:
+      field: is_intubated
+      operator: equals
+      value: true
+    rationale: "Intubated patients require immediate airway management and continuous monitoring."
+    source: "Appendix B, Note A"
+
+  - rule_id: A2_apneic
+    esi_level: 1
+    descision_point: A
+    category: clinical_condition
+    trigger:
+      field: is_apneic
+      operator: equals
+      value: true
+    rationale: "An apneic patient is not breathing and requries immediate airway intervention."
+    source: "Appendix B, Note A"
+
+  - rule_id: A3_pulseless
+    esi_level: 1
+    decision_point: A
+    category: clinical_condition
+    trigger:
+      field: is_pulseless
+      operator: equals
+      value: true
+    rationale: "A pulseless patient requries immediate resuscitation."
+    source: "Appendix B, Note A"
+
+  - rule_id: A4_severe_respiratory_distress
+    esi_level: 1
+    decision_point: A
+    category: clinical_condition
+    trigger:
+      field: has_severe_respiratory_distress
+      operator: equals
+      value: true
+    rationale: "Severe respiratory distress can rapidly progress to respiratory failure without immediate intervention."
+    source: "Appendix B, Note A"
+
+  - rule_id: A5_low_oxygen_saturation
+    esi_level: 1
+    decision_point: A
+    category: vital_sign
+    trigger:
+      field: oxygen_saturation
+      operator: less_than
+      value: 90
+    rationale: "Oxygen saturation below 90% indicates severe hypoxemia and requries immediate intervention."
+    source: "Appendix B, Note A"
+
+  - rule_id: A6_acute_mental_status_change
+    esi_level: 1
+    decision_point: A
+    category: clinical_condition
+    trigger:
+      field: has_acute_mental_status_change
+      operator: equals
+      value: true
+    rationale: "Acute mental status change may indicate a life-threatening neurological or metabolic emergency."
+    source: "Appendix B, Note A"
+
+  - rule_id: A7_unresponsive
+    esi_level: 1
+    decision_point: A
+    category: clinical_condition
+    trigger:
+      field: is_unresponsive
+      operator: equals
+      value: true
+    rationale: "Unresponsive patients (P or U on AVPU scale, or nonverbal and not following commands) reuqire immediate evaluation and intervention."
+    source: "Appendix B, Note A"
+    
