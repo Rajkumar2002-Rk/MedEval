@@ -90,6 +90,7 @@ rules:
 
 
 # DECISION B: High Risk / Confusion / Severe pain -> ESI 2
+
   - rule_id: B1_new_onset_altered_mental_status
     esi_level: 2
     decision_point: B
@@ -191,3 +192,655 @@ rules:
           value: true
     rationale: "Patients in severe psychological distress should not wait in the public waiting room and require immediate placement in a treatment area."
     source: "Chapter 3, Section 3 (severe distress examples)"
+
+
+# ----- B-Q1: High Risk - Cardiovascular -----
+
+  - rule_id: B8_chest_pain_age_over_40
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_chest_pain_or_equivalent
+          operator: equals
+          value: true
+        - field: patient_age
+          operator: greater_than_or_equal
+          value: 40
+    rationale: "Chest pain or anginal-equivalent symptoms (epigastric, jaw, arm pain) in patients 40 or older warrants rapid ECG and evaluation for acute coronary syndrome."
+    source: "Chapter 3, Cardiovascular; Table 3-1 (54-year-old female with epigastric pain example)"
+
+  - rule_id: B9_chest_pain_with_cardiac_risk_factor
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_chest_pain_or_equivalent
+          operator: equals
+          value: true
+        - field: has_cardiac_risk_factor
+          operator: equals
+          value: true
+    rationale: "Chest pain in a patient with cardiac risk factors (diabetes, hypertension, smoking, known CAD, cocaine use) requires rapid evaluation for acute coronary syndrome regardless of age."
+    source: "Chapter 3, Cardiovascular (cocaine + chest pain example)"
+
+  - rule_id: B10_sudden_palpitations_with_tachycardia
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_sudden_palpitations
+          operator: equals
+          value: true
+        - field: heart_rate
+          operator: greater_than_or_equal
+          value: 150
+    rationale: "Sudden onset palpitations with tachycardia ≥ 150 may indicate supraventricular tachycardia or other unstable arrhythmia requiring rapid evaluation."
+    source: "Chapter 3, Cardiovascular; Table 3-1 (35-year-old female with HR 160 example)"
+
+  - rule_id: B11_acute_arterial_occlusion
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_cold_extremity
+          operator: equals
+          value: true
+        - field: has_absent_or_diminished_pulse
+          operator: equals
+          value: true
+    rationale: "A cold extremity with absent or diminished pulse indicates acute arterial occlusion, a time-sensitive limb-threatening emergency."
+    source: "Chapter 3, Cardiovascular; Table 3-1 (52-year-old diabetic with cold foot example)"
+
+  - rule_id: B12_hypertensive_emergency
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - any_of:
+            - field: systolic_bp
+              operator: greater_than_or_equal
+              value: 180
+            - field: diastolic_bp
+              operator: greater_than_or_equal
+              value: 110
+        - field: has_end_organ_symptoms
+          operator: equals
+          value: true
+    rationale: "Severe hypertension (SBP ≥ 180 or DBP ≥ 110) WITH symptoms of end-organ damage (severe headache, mental status change, chest pain, vision changes, focal weakness) constitutes a hypertensive emergency. Asymptomatic severe hypertension alone does NOT meet this criterion."
+    source: "Chapter 3, General Medicine; Table 3-1 (29-year-old with BP 210/120 + severe headache example, contrasted with 55-year-old with BP 204/102 but no symptoms)"
+
+  - rule_id: B13_suspected_aortic_dissection_or_aaa
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_signs_of_aortic_dissection_or_aaa
+      operator: equals
+      value: true
+    rationale: "Severe sudden 'ripping' or 'tearing' chest or abdominal pain radiating to the back is highly suspicious for aortic dissection or abdominal aortic aneurysm — both are immediately life-threatening."
+    source: "Chapter 3, Abdominal (AAA description) and Cardiovascular (dissection)"
+
+
+# ----- B-Q1: High Risk - Respiratory -----
+
+  - rule_id: B14_drooling_or_stridor
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      any_of:
+        - field: has_drooling
+          operator: equals
+          value: true
+        - field: has_stridor
+          operator: equals
+          value: true
+    rationale: "Drooling or stridor indicates impending upper airway compromise (epiglottitis, peritonsillar abscess, foreign body, angioedema) and requires immediate evaluation."
+    source: "Chapter 3, Nose and Throat; Table 3-1 (5-year-old with drooling example)"
+
+  - rule_id: B15_moderate_respiratory_distress
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_respiratory_distress
+          operator: equals
+          value: true
+        - any_of:
+            - field: respiratory_rate
+              operator: greater_than_or_equal
+              value: 30
+            - field: oxygen_saturation
+              operator: less_than
+              value: 92
+    rationale: "Moderate respiratory distress with tachypnea (RR ≥ 30) or hypoxia (SpO2 < 92%) indicates a patient at high risk of rapid deterioration. Severe distress with intubation needs would meet ESI 1 criteria."
+    source: "Chapter 3, Respiratory"
+
+  - rule_id: B16_suspected_spontaneous_pneumothorax
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_signs_of_spontaneous_pneumothorax
+      operator: equals
+      value: true
+    rationale: "Sudden onset of severe shortness of breath after coughing or exertion (especially in tall thin young males) is concerning for spontaneous pneumothorax."
+    source: "Chapter 3, Respiratory; Table 3-1 (20-year-old tall thin male example)"
+
+  - rule_id: B17_anaphylaxis_risk
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_known_allergen_exposure
+          operator: equals
+          value: true
+        - field: has_throat_or_tongue_swelling_or_wheeze
+          operator: equals
+          value: true
+    rationale: "Recent allergen exposure with throat tightening, tongue swelling, or wheezing is highly concerning for anaphylaxis and can deteriorate rapidly. Patients in established anaphylactic shock meet ESI 1 criteria."
+    source: "Chapter 3, Cardiovascular (peanut allergy + throat tightening example)"
+
+# ----- B-Q1: High Risk - Neurological -----
+
+  - rule_id: B18_suspected_stroke
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      any_of:
+        - field: has_sudden_onset_speech_deficit
+          operator: equals
+          value: true
+        - field: has_sudden_onset_motor_weakness
+          operator: equals
+          value: true
+        - field: has_sudden_onset_facial_droop
+          operator: equals
+          value: true
+    rationale: "Sudden onset speech deficits, motor weakness, or facial droop are signs of acute stroke. Time from symptom onset determines treatment eligibility (fibrinolytics), making rapid evaluation critical."
+    source: "Chapter 3, Neurological; Table 3-1 (52-year-old male with sudden slurred speech example)"
+
+  - rule_id: B19_thunderclap_headache
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_sudden_severe_worst_headache_of_life
+      operator: equals
+      value: true
+    rationale: "Sudden severe headache described as 'worst headache of life' (especially after exertion) is highly concerning for subarachnoid hemorrhage."
+    source: "Chapter 3, Neurological; Table 3-1 (55-year-old male with worst headache after stressful activity example)"
+
+  - rule_id: B20_meningitis_signs
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_severe_headache
+          operator: equals
+          value: true
+        - any_of:
+            - field: has_stiff_neck
+              operator: equals
+              value: true
+            - field: has_rash
+              operator: equals
+              value: true
+            - field: temperature_celsius
+              operator: greater_than_or_equal
+              value: 38.5
+    rationale: "Severe headache combined with stiff neck, rash, or fever is concerning for meningitis. Rapid deterioration is common and time-sensitive antibiotics improve outcomes."
+    source: "Chapter 3, Neurological; Table 3-1 (35-year-old female with severe headache, stiff neck, rash, temp 102 example)"
+
+  - rule_id: B21_reported_seizure
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_reported_seizure
+      operator: equals
+      value: true
+    rationale: "All patients with a reported seizure (even if currently post-ictal) meet ESI Level 2 criteria. They should not wait in the public waiting room due to risk of another seizure."
+    source: "Chapter 3, Neurological"
+
+  - rule_id: B22_increased_intracranial_pressure
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_recent_head_injury
+          operator: equals
+          value: true
+        - any_of:
+            - field: has_severe_headache
+              operator: equals
+              value: true
+            - field: is_vomiting
+              operator: equals
+              value: true
+            - field: has_new_onset_confusion
+              operator: equals
+              value: true
+    rationale: "A patient with recent head injury presenting with severe headache, vomiting, or new confusion may have increasing intracranial pressure from an evolving intracranial bleed."
+    source: "Chapter 3, Trauma (head-injured patient with symptoms of increased ICP)"
+
+# ----- B-Q1: High Risk - Abdominal / Gastrointestinal -----
+
+  - rule_id: B23_elderly_severe_abdominal_pain
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_severe_abdominal_pain
+          operator: equals
+          value: true
+        - field: patient_age
+          operator: greater_than_or_equal
+          value: 65
+    rationale: "Elderly patients (≥65) with severe abdominal pain are at high risk for life-threatening conditions including bowel obstruction, mesenteric ischemia, perforation, and AAA — all associated with significantly higher mortality in this population."
+    source: "Chapter 3, Abdominal (frail elderly with severe abdominal pain example); Table 3-1 (88-year-old with severe RLQ pain example)"
+
+  - rule_id: B24_gi_bleed_with_instability
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - any_of:
+            - field: is_vomiting_blood
+              operator: equals
+              value: true
+            - field: has_significant_lower_gi_bleeding
+              operator: equals
+              value: true
+        - any_of:
+            - field: heart_rate
+              operator: greater_than_or_equal
+              value: 100
+            - field: systolic_bp
+              operator: less_than
+              value: 100
+            - field: patient_age
+              operator: greater_than_or_equal
+              value: 65
+    rationale: "GI bleeding (hematemesis or significant lower GI bleeding) accompanied by tachycardia, hypotension, or advanced age indicates risk of rapid hemodynamic deterioration."
+    source: "Chapter 3, Abdominal (vomiting blood + tachycardia example); Table 3-1 (45-year-old female vomiting blood + tachycardic, plus elderly with hematemesis example)"
+
+  - rule_id: B25_suspected_ectopic_pregnancy
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: patient_sex
+          operator: equals
+          value: female
+        - field: has_lower_abdominal_pain
+          operator: equals
+          value: true
+        - field: is_of_childbearing_age_or_pregnant
+          operator: equals
+          value: true
+        - field: pregnancy_status_confirmed_negative
+          operator: equals
+          value: false
+    rationale: "A female of childbearing age (or known pregnant) with lower abdominal pain — unless pregnancy is confirmed absent — must be considered at risk for ectopic pregnancy, a surgical emergency."
+    source: "Chapter 3, OB/GYN; Table 3-1 (24-year-old with LLQ pain examples)"
+
+  - rule_id: B26_testicular_torsion
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: patient_sex
+          operator: equals
+          value: male
+        - field: has_sudden_severe_testicular_pain
+          operator: equals
+          value: true
+    rationale: "Sudden onset severe testicular pain in males is concerning for testicular torsion, a time-sensitive surgical emergency. Delay risks permanent testicular loss."
+    source: "Chapter 3, Genitourinary; Table 3-1 (22-year-old with sudden testicular pain example)"
+
+
+# ----- B-Q1: High Risk - Endocrine / Metabolic / Tox -----
+
+  - rule_id: B27_suspected_dka_or_hhs
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_known_diabetes
+          operator: equals
+          value: true
+        - any_of:
+            - field: has_persistent_vomiting
+              operator: equals
+              value: true
+            - field: has_signs_of_dehydration
+              operator: equals
+              value: true
+            - field: has_altered_mental_status
+              operator: equals
+              value: true
+    rationale: "Diabetic patients with persistent vomiting, dehydration, or altered mental status are at high risk for diabetic ketoacidosis or hyperosmolar hyperglycemic state. Bedside glucose at triage is recommended."
+    source: "Chapter 3, General Medical; Table 3-1 (40-year-old diabetic female with vomiting example)"
+
+  - rule_id: B28_suspected_sepsis
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_suspected_infection
+          operator: equals
+          value: true
+        - any_of:
+            - field: temperature_celsius
+              operator: greater_than_or_equal
+              value: 38.5
+            - field: temperature_celsius
+              operator: less_than
+              value: 36.0
+            - field: heart_rate
+              operator: greater_than_or_equal
+              value: 120
+            - field: systolic_bp
+              operator: less_than
+              value: 100
+            - field: has_altered_mental_status
+              operator: equals
+              value: true
+    rationale: "Suspected infection with fever, hypothermia, marked tachycardia, hypotension, or altered mental status meets criteria for suspected sepsis — a time-sensitive emergency where early antibiotics improve survival."
+    source: "Chapter 3, General Medical (sepsis as high-risk)"
+
+  - rule_id: B29_immunocompromised_with_fever
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: is_immunocompromised
+          operator: equals
+          value: true
+        - field: temperature_celsius
+          operator: greater_than_or_equal
+          value: 38.0
+    rationale: "Immunocompromised patients (active chemotherapy, post-transplant, severe immunodeficiency) with fever ≥38°C are at high risk for neutropenic sepsis. Standard infection signs may be blunted; fever alone is a red flag."
+    source: "Chapter 3, General Medical (oncology + fever example); Table 3-1 (40-year-old on chemo with temp 102.2 example)"
+
+  - rule_id: B30_dialysis_patient_systemically_ill
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: is_dialysis_patient
+          operator: equals
+          value: true
+        - any_of:
+            - field: has_missed_dialysis
+              operator: equals
+              value: true
+            - field: has_chest_pain_or_equivalent
+              operator: equals
+              value: true
+            - field: has_weakness_or_dizziness
+              operator: equals
+              value: true
+            - field: has_altered_mental_status
+              operator: equals
+              value: true
+    rationale: "Dialysis patients with missed dialysis, chest pain, weakness, or altered mental status are at high risk for life-threatening hyperkalemia and cardiac dysrhythmias."
+    source: "Chapter 3, General Medical (hyperkalemia in dialysis patients); Table 3-1 (69-year-old dialysis patient weak and dizzy example)"
+
+  - rule_id: B31_overdose_or_ingestion
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_intentional_or_significant_overdose
+      operator: equals
+      value: true
+    rationale: "Any patient with an intentional overdose or significant ingestion of medication or toxic substance requires rapid evaluation. Apneic or unresponsive patients meet ESI 1 criteria instead."
+    source: "Chapter 3, Toxicological"
+
+# ----- B-Q1: High Risk - Trauma & Wounds -----
+
+  - rule_id: B32_high_risk_trauma_mechanism
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_high_risk_trauma_mechanism
+      operator: equals
+      value: true
+    rationale: "Mechanisms associated with serious internal injury — high-speed motor vehicle crash, pedestrian struck by vehicle, fall from significant height, gunshot wound, stab wound to torso/neck/head/groin — warrant ESI 2 even if vital signs are currently stable. Hemodynamically unstable trauma meets ESI 1 criteria."
+    source: "Chapter 3, Trauma (mechanism-based high-risk discussion)"
+
+  - rule_id: B33_penetrating_trauma_torso_or_neck_or_head
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_penetrating_trauma_to_torso_neck_head_or_groin
+      operator: equals
+      value: true
+    rationale: "Penetrating trauma (gunshot, stab) to the head, neck, chest, abdomen, or groin carries high risk of major vascular, airway, or organ injury and warrants immediate evaluation."
+    source: "Chapter 3, Trauma"
+
+  - rule_id: B34_compartment_syndrome_or_neurovascular_compromise
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      any_of:
+        - field: has_signs_of_compartment_syndrome
+          operator: equals
+          value: true
+        - field: has_extremity_neurovascular_compromise
+          operator: equals
+          value: true
+        - field: has_partial_or_complete_amputation
+          operator: equals
+          value: true
+    rationale: "Compartment syndrome, extremity neurovascular compromise, and partial/complete amputations are time-sensitive limb-threatening emergencies."
+    source: "Chapter 3, Orthopedic and Wound Management"
+
+  - rule_id: B35_uncontrolled_or_arterial_bleeding
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      any_of:
+        - field: has_uncontrolled_bleeding
+          operator: equals
+          value: true
+        - field: has_arterial_bleeding
+          operator: equals
+          value: true
+    rationale: "Uncontrolled or arterial bleeding requires rapid intervention to prevent shock. Bleeding requiring immediate life-saving intervention to stabilize meets ESI 1 criteria."
+    source: "Chapter 3, Wound Management"
+
+  - rule_id: B36_chemical_eye_exposure_or_acute_vision_loss
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      any_of:
+        - field: has_chemical_eye_exposure
+          operator: equals
+          value: true
+        - field: has_sudden_vision_loss
+          operator: equals
+          value: true
+        - field: has_significant_eye_trauma
+          operator: equals
+          value: true
+    rationale: "Chemical eye exposure, sudden vision loss, or significant eye trauma carries immediate threat to vision. Chemical splash requires immediate irrigation regardless of bed availability."
+    source: "Chapter 3, Ocular; Table 3-1 (sudden vision loss + eye trauma examples)"
+    
+# ----- B-Q1: High Risk - Mental Health -----
+
+  - rule_id: B37_suicidal_or_homicidal_or_elopement_risk
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      any_of:
+        - field: is_suicidal
+          operator: equals
+          value: true
+        - field: is_homicidal
+          operator: equals
+          value: true
+        - field: is_elopement_risk
+          operator: equals
+          value: true
+    rationale: "Patients who are suicidal, homicidal, or at risk of elopement pose a danger to themselves or others and should not be left in the waiting room."
+    source: "Chapter 3, Mental Health; Table 3-1 (suicidal thoughts and combative patient examples)"
+
+  - rule_id: B38_psychotic_or_violent
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      any_of:
+        - field: is_acutely_psychotic
+          operator: equals
+          value: true
+        - field: is_violent_at_triage
+          operator: equals
+          value: true
+    rationale: "Acute psychosis or violent behavior at triage indicates risk to the patient and others. Rapid placement in a treatment area is required."
+    source: "Chapter 3, Mental Health"
+
+  - rule_id: B39_intoxicated_with_signs_of_trauma
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: is_intoxicated
+          operator: equals
+          value: true
+        - any_of:
+            - field: has_signs_of_trauma
+              operator: equals
+              value: true
+            - field: has_altered_mental_status
+              operator: equals
+              value: true
+            - field: has_aspiration_risk
+              operator: equals
+              value: true
+    rationale: "Intoxication alone does not require ESI 2, but intoxication combined with signs of trauma, altered mental status, or aspiration risk indicates a high-risk situation."
+    source: "Chapter 3, Mental Health; Table 3-1 (35-year-old female with alcohol + laceration to head example)"
+    
+# ----- B-Q1: High Risk - OB / GYN -----
+
+  - rule_id: B40_late_pregnancy_bleeding_or_pain
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: is_pregnant
+          operator: equals
+          value: true
+        - field: is_late_pregnancy
+          operator: equals
+          value: true
+        - any_of:
+            - field: has_vaginal_bleeding
+              operator: equals
+              value: true
+            - field: has_localized_abdominal_pain
+              operator: equals
+              value: true
+    rationale: "Pregnant patients at 14 weeks or beyond with localized abdominal pain or vaginal bleeding require rapid evaluation for placental abruption, placenta previa, or preterm labor."
+    source: "Chapter 3, OB/GYN (late pregnancy complications)"
+
+  - rule_id: B41_postpartum_heavy_bleeding
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_postpartum_heavy_vaginal_bleeding
+      operator: equals
+      value: true
+    rationale: "Postpartum heavy vaginal bleeding is concerning for postpartum hemorrhage and requires urgent evaluation."
+    source: "Chapter 3, OB/GYN (postpartum heavy bleeding)"
+    
+# ----- B-Q1: High Risk - Environmental -----
+
+  - rule_id: B42_inhalation_injury_or_significant_burn
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      any_of:
+        - field: has_smoke_or_chemical_inhalation
+          operator: equals
+          value: true
+        - field: has_third_degree_burns
+          operator: equals
+          value: true
+    rationale: "Smoke or chemical inhalation may cause delayed airway compromise. Third-degree burns require burn-center evaluation. Patients in active severe airway distress meet ESI 1 criteria."
+    source: "Chapter 3, Environmental"
+    
+# ----- B-Q1: High Risk - Transplant -----
+
+  - rule_id: B43_transplant_recipient_systemically_ill
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: is_transplant_recipient
+          operator: equals
+          value: true
+        - any_of:
+            - field: has_suspected_infection
+              operator: equals
+              value: true
+            - field: has_signs_of_rejection
+              operator: equals
+              value: true
+            - field: temperature_celsius
+              operator: greater_than_or_equal
+              value: 38.0
+    rationale: "Transplant recipients are immunocompromised and at high risk for rejection, sepsis, and other complications. Any systemic symptom warrants rapid evaluation."
+    source: "Chapter 3, Transplant"
+    
+# ----- B-Q1: High Risk - Pediatric (general) -----
+# Detailed pediatric algorithm and age-banded vitals are extracted in the
+# Pediatric session (Chapter 6 of the handbook).
+
+  - rule_id: B44_suspected_child_abuse
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: patient_age
+          operator: less_than
+          value: 18
+        - field: has_suspected_abuse
+          operator: equals
+          value: true
+    rationale: "Suspected child abuse requires immediate evaluation for occult injury and safety planning. Reporting is mandatory in all U.S. jurisdictions."
+    source: "Chapter 3, Pediatric (child abuse as high-risk situation)"
