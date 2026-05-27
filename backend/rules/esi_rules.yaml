@@ -86,4 +86,108 @@ rules:
       value: true
     rationale: "Unresponsive patients (P or U on AVPU scale, or nonverbal and not following commands) reuqire immediate evaluation and intervention."
     source: "Appendix B, Note A"
-    
+
+
+
+# DECISION B: High Risk / Confusion / Severe pain -> ESI 2
+  - rule_id: B1_new_onset_altered_mental_status
+    esi_level: 2
+    decision_point: B
+    category: clinical_condition
+    trigger:
+      any_of:
+        - field: has_new_onset_confusion
+          operator: equals
+          value: true
+        - field: has_new_onset_lethargy
+          operator: equals
+          value: true
+        - field: has_new_onset_disorientation
+          operator: equals
+          value: true
+    rationale: " New onset confusion, lethargy, or disorientation may indicate stroke, metabolic imbalance, or toxic exposure and requries rapid evaluation. Chronic dementia or chronic confusion does NOT meet this criterion."
+    source: "Chapter 3, Section 2 (Decision B, Question 2)"
+  
+  - rule_id: B2_sickle_cell_crisis
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_sickle_cell_pain_crisis
+      operator: equals
+      value: true
+    rationale: "Sickle cell pain crisis cannot be managed at triage and requires rapid placement for IV analgesia and hydration."
+    source: "Chapter 3, Section 3 (severe pain examples)"
+
+  - rule_id: B3_renal_colic
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_renal_colic
+      operator: equals
+      value: true
+    rationale: "Renal colic pain cannot be managed at triage and requires rapid analgesia."
+    source: "Chapter 3, Section 3 (severe pain examples)"
+
+  - rule_id: B4_oncology_severe_pain
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: is_oncology_patient
+          operator: equals
+          value: true
+        - field: severity
+          operator: greater_than_or_equal
+          value: 7
+    rationale: "Oncology patients with severe pain require rapid evaluation and aggressive pain control."
+    source: "Chapter 3, Section 3 (severe pain examples)"
+
+  - rule_id: B5_significant_burn_requiring_pain_control
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      field: has_significant_burn_requiring_pain_control
+      operator: equals
+      value: true
+    rationale: "Full- or partial-thickness burns require immediate pain control that cannot be provided at triage."
+    source: "Chapter 3, Section 3 (severe pain examples)"
+
+  - rule_id: B6_acute_urinary_retention
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      all_of:
+        - field: has_acute_urinary_retention
+          operator: equals
+          value: true
+        - field: severity
+          operator: greater_than_or_equal
+          value: 7
+    rationale: "Acute urinary retention with severe pain requires rapid intervention (bladder decompression)."
+    source: "Chapter 3, Section 3 (severe pain examples)"
+
+  - rule_id: B7_severe_psychological_distress
+    esi_level: 2
+    decision_point: B
+    category: high_risk_situation
+    trigger:
+      any_of:
+        - field: is_sexual_assault_victim_in_distress
+          operator: equals
+          value: true
+        - field: is_combative_at_triage
+          operator: equals
+          value: true
+        - field: has_acute_grief_reaction
+          operator: equals
+          value: true
+        - field: is_domestic_violence_victim_in_distress
+          operator: equals
+          value: true
+    rationale: "Patients in severe psychological distress should not wait in the public waiting room and require immediate placement in a treatment area."
+    source: "Chapter 3, Section 3 (severe distress examples)"
