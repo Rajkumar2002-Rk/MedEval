@@ -3,10 +3,36 @@
 # Extracted from: docs/esi-handbook-v4.pdf
 #
 # Schema notes:
-# - rules are evaluated in order (Decision A First, then B, then C, then D)
-# - first matching rule wins
-# - fields prefixed 'is_' or 'has_' come from LLM extraction of the complaint
-# - other fields (oxygen_saturation, heart_rate, etc.) come directly from TriageRequest
+#   - rules are evaluated in strict order: Decision A → B → C → D
+#   - first matching rule wins
+#   - fields prefixed `is_` or `has_` come from LLM extraction of the complaint
+#   - vital sign fields (heart_rate, oxygen_saturation, etc.) come directly from TriageRequest
+#   - `predicted_resources` is a list extracted by the LLM
+#   - `predicted_resource_count` is computed in Python as len(predicted_resources)
+#
+# Resource definitions (per Appendix B):
+#   COUNTS as a resource:
+#     - labs (blood, urine — all labs together = 1 resource)
+#     - ecg
+#     - xray (all plain X-rays together = 1 resource)
+#     - ct, mri, ultrasound, angiography (each counts separately)
+#     - iv_fluids (hydration)
+#     - iv_or_im_medications, nebulized_medications
+#     - specialty_consultation
+#     - simple_procedure (laceration repair, foley catheter) = 1
+#     - complex_procedure (conscious sedation) = 2
+#
+#   Does NOT count as a resource:
+#     - history & physical (including pelvic)
+#     - point-of-care testing
+#     - saline lock / heplock
+#     - PO (oral) medications
+#     - tetanus immunization
+#     - prescription refills
+#     - phone calls to PCP
+#     - simple wound care (dressings, recheck)
+#     - crutches, splints, slings
+
 
 rules:
 # DESCISION A: Immediate Life-Saving Intervention Required -> ESI 1
@@ -844,3 +870,160 @@ rules:
           value: true
     rationale: "Suspected child abuse requires immediate evaluation for occult injury and safety planning. Reporting is mandatory in all U.S. jurisdictions."
     source: "Chapter 3, Pediatric (child abuse as high-risk situation)"
+
+
+# ----- DECISION C: Resource Count -> ESI 3, 4, or 5 -----
+# These rules are evaluated ONLY if the patient does not meet Decision A
+# (ESI 1) or Decision B (ESI 2) criteria. Decision D (danger-zone vitals)
+# may still upgrade an ESI 3 patient to ESI 2.
+
+
+  - rule_id: C1_two_or_more_resources
+    esi_level: 3
+    decision_point: C
+    category: resource_count
+    trigger:
+      field: predicted_resource_count
+      operator: greater_than_or_equal
+      value: 2
+    rationale: "Patients expected to require 2 or more different types of resources (labs, imaging, IV medications, consultations, procedures) have moderate complexity and are assigned ESI 3."
+    source: "Appendix B, Note C; Chapter 4 (resource definitions)"
+
+  - rule_id: C2_one_resource
+    esi_level: 4
+    decision_point: C
+    category: resource_count
+    trigger:
+      field: predicted_resource_count
+      operator: equals
+      value: 1
+    rationale: "Patients expected to require exactly 1 resource have low complexity and are assigned ESI 4. Example: ankle injury requiring only an X-ray."
+    source: "Appendix B, Note C; Chapter 4 (resource definitions)"
+
+  - rule_id: C3_no_resources
+    esi_level: 5
+    decision_point: C
+    category: resource_count
+    trigger:
+      field: predicted_resource_count
+      operator: equals
+      value: 0
+    rationale: "Patients expected to require no resources (history and physical only, possibly with PO medications or simple wound care) are assigned ESI 5. Example: prescription refill, simple cold symptoms."
+    source: "Appendix B, Note C; Chapter 4 (resource definitions)"
+    
+# ----- DECISION D: Danger Zone Vital Signs -> Upgrade ESI 3 to ESI 2 -----
+# These rules fire ONLY when the patient is on track for ESI 3 (i.e., the predicted resource count is 2 or more).
+# Abnormal vitals upgrade them to ESI 2. Thresholds are age-banded per Figure 5-1 of the handbook.
+
+# NOTE: 'patient_age_months' is needed to distinguish <3 mo from older
+# Pediatric patients. This field will be added to TriageRequest in the pediatric chapter sessions. Until then, the engine should skip D3 and D4 gracefully when the field is missing.
+
+  - rule_id: D1_danger_zone_vitals_adult
+    esi_level: 2
+    decision_point: D
+    category: vital_sign
+    applies_when:
+      field: predicted_resource_count
+      operator: greater_than_or_equal
+      value: 2
+    trigger:
+      all_of:
+        - field: patient_age
+          operator: greater_than
+          value: 0
+        - any_of:
+            - field: heart_rate
+              operator: greater_than
+              value: 100
+            - field: respiratory_rate
+              operator: greater_than
+              value: 20
+            - field: oxygen_saturation
+              operator: less_than
+              value: 92
+    rationale: "Adult danger-zone vitals (HR > 100, RR > 20, or Sp02 < 92%) in a patient otherwise destined for ESI 3 indicate higher risk of deterioration and warrant upgrade to ESI 2."
+    source: " Figure 5-1, Decision D (>8 years row)"
+
+  - rule_id: D2_danger_zone_vitals_child_3_to_8_years
+    esi_level: 2
+    decision_point: D
+    category: vital_sign
+    applies_when:
+      field: predicted_resource_count
+      operator: greater_than_or_equal
+      value: 2
+    trigger:
+      all_of:
+        - field: patient_age
+          operator: greater_than_or_equal
+          value: 3
+        - field: patient_age
+          operator: less_than_or_equal
+          value: 8
+        - any_of:
+            - field: heart_rate
+              operator: greater_than
+              value: 140
+            - field: respiratory_rate
+              operator: greater_than
+              value: 30
+            - field: oxygen_saturation
+              operator: less_than
+              value: 92
+    rationale: "Pediatric (3-8 years) danger-zone vitals (HR > 140, RR > 30, or SpO2 < 92%) warrant upgrade from ESI 3 to ESI 2."
+    source: "Figure 5-1, Decision D (3-8 years row)"
+
+  - rule_id: D3_danger_zone_vitals_child_3_months_to_3_years
+    esi_level: 2
+    decision_point: D
+    category: vital_sign
+    applies_when:
+      all_of:
+        - field: predicted_resource_count
+          operator: greater_than_or_equal
+          value: 2
+        - field: patient_age_months
+          operator: greater_than_or_equal
+          value: 3
+        - field: patient_age_months
+          operator: less_than
+          value: 36
+    trigger:
+      any_of:
+        - field: heart_rate
+          operator: greater_than
+          value: 160
+        - field: respiratory_rate
+          operator: greater_than
+          value: 40
+        - field: oxygen_saturation
+          operator: less_than
+          value: 92
+    rationale: "Infant/toddler (3 months - 3 years) danger-zone vitals (HR > 160, RR > 40, or SpO2 < 92%) warrant upgrade from ESI 3 to ESI 2."
+    source: "Figure 5-1, Decision D (3 mo - 3 y row)"
+
+  - rule_id: D4_danger_zone_vitals_infant_under_3_months
+    esi_level: 2
+    decision_point: D
+    category: vital_sign
+    applies_when:
+      all_of:
+        - field: predicted_resource_count
+          operator: greater_than_or_equal
+          value: 2
+        - field: patient_age_months
+          operator: less_than
+          value: 3
+    trigger:
+      any_of:
+        - field: heart_rate
+          operator: greater_than
+          value: 180
+        - field: respiratory_rate
+          operator: greater_than
+          value: 50
+        - field: oxygen_saturation
+          operator: less_than
+          value: 92
+    rationale: "Neonate/young infant (<3 months) danger-zone vitals (HR > 180, RR > 50, or SpO2 < 92%) warrant upgrade from ESI 3 to ESI 2."
+    source: "Figure 5-1, Decision D (<3 mo row)"
