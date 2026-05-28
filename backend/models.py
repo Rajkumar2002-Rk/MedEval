@@ -1,7 +1,7 @@
 from enum import Enum
 from pydantic import BaseModel, Field
 
-class patient_sex(str, Enum):
+class PatientSex(str, Enum):
     male = "male"
     female = "female"   
     other = "other"
@@ -10,7 +10,7 @@ class TriageRequest(BaseModel):
     #Requried Fields
     complaint: str = Field(min_length=5, max_length=2000)
     patient_age: int = Field(ge=0, le=120)
-    patient_sex: patient_sex
+    patient_sex: PatientSex
     severity: int = Field(ge=1, le=10)
 
     #Optional vital signs
