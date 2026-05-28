@@ -143,6 +143,16 @@ class ExtractedFacts(BaseModel):
     has_signs_of_rejection: bool = False
     has_suspected_abuse: bool = False
 
+    # B-Q1: Pediatric A-overrides (Chapter 6)
+    is_actively_seizing: bool = False
+    has_petechial_rash: bool = False
+    has_signs_of_shock_or_hypoperfusion: bool = False
+    is_hypotensive_for_age: bool = False
+    is_bradycardic_for_age: bool = False
+    has_hemophilia_with_possible_bleed: bool = False
+    has_moderate_to_severe_croup_or_bronchiolitis: bool = False
+    has_significantly_sick_contact_exposure: bool = False
+
     # DECISION C -- Resource Prediction (drives ESI 3, 4, 5)
     # The LLM returns a list of resource type strings the patient will need.
     # Engine computes predicted_resource_count = len(predicted_resources).

@@ -83,3 +83,45 @@ case_5_facts = ExtractedFacts(
     predicted_resources=["labs", "xray", "iv_fluids", "iv_or_im_medications"],
 )
 run_case("57yo with pneumonia + bad vitals", case_5_request, case_5_facts)
+
+
+# CASE 6: Active seizure in a child → expect ESI 1 (rule A8) 
+case_6_request = TriageRequest(
+    complaint="3-year-old having a seizure right now per the parent",
+    patient_age=3,
+    patient_age_months=36,
+    patient_sex=PatientSex.male,
+    severity=10,
+)
+case_6_facts = ExtractedFacts(is_actively_seizing=True)
+run_case("3yo with active seizure", case_6_request, case_6_facts)
+
+
+# CASE 7: Febrile neonate → expect ESI 2 (rule B45) 
+case_7_request = TriageRequest(
+    complaint="2-week-old infant with fever, mom says baby is not feeding well",
+    patient_age=0,
+    patient_age_months=0,
+    patient_sex=PatientSex.female,
+    severity=5,
+    temperature_celsius=38.5,
+)
+case_7_facts = ExtractedFacts()
+run_case("2-week-old with fever", case_7_request, case_7_facts)
+
+
+# CASE 8: Prepubescent child with hypotension → expect ESI 1 (rule A11) 
+case_8_request = TriageRequest(
+    complaint="8-year-old hit by car, looks pale and confused",
+    patient_age=8,
+    patient_sex=PatientSex.male,
+    severity=9,
+    systolic_bp=70,
+    heart_rate=140,
+)
+case_8_facts = ExtractedFacts(
+    is_hypotensive_for_age=True,
+    has_signs_of_shock_or_hypoperfusion=True,
+    has_high_risk_trauma_mechanism=True,
+)
+run_case("8yo struck by car, hypotensive", case_8_request, case_8_facts)

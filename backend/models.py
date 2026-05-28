@@ -21,5 +21,8 @@ class TriageRequest(BaseModel):
     oxygen_saturation: int | None = Field(default=None, ge=50, le=100)
     temperature_celsius: float | None = Field(default=None, ge=30.0, le=45.0)
 
+    # Optional age refinement for pediatrics patients
+    patient_age_months: int | None = Field(default=None, ge =0, le=60)
+
     #Optional medical history
     medical_history: list[str] = Field(default_factory=list)
