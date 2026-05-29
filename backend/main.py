@@ -18,12 +18,19 @@ from models import TriageRequest
 from agent.graph import run_triage
 from fastapi import Depends
 from security import verify_api_key
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="MedEval API",
     version="0.2.0",
     description="Healthcare AI triage assistant. Deterministic rules + LLM explanations.",
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
