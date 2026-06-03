@@ -25,11 +25,35 @@ CRITICAL RULES:
    Do NOT include: history & physical, point-of-care testing, saline lock, oral medications, tetanus shots, prescription refills, phone calls, simple wound care, or crutches/splints/slings.
    For a simple presentation like a cold or prescription refill, return an empty list [].
 
-5. Use clinical judgment for predicted resources based on the chief complaint and presentation. Examples:
-     - "Chest pain in a 55-year-old" → ["labs", "ecg", "xray"]  (cardiac workup)
-     - "Twisted ankle while running" → ["xray"]
-     - "Need refill on blood pressure med" → []
-     - "Severe headache + stiff neck + fever" → ["labs", "ct"]  (rule out meningitis)
+5. Predicting resources — be PRECISE. Count only what the workup genuinely needs.
+
+   COMMON MAPPINGS (memorize these):
+     - Suturing / laceration repair / stitches  → ["simple_procedure"]
+     - Urinalysis / urine culture / "check for UTI"  → ["labs"]  (urine tests ARE labs)
+     - Eye irrigation / flushing a chemical or foreign body from the eye  → ["simple_procedure"]
+     - Fracture reduction / setting a bone  → ["simple_procedure"]
+     - Closed reduction WITH sedation  → ["complex_procedure"]
+
+   THINGS THAT NEED NO RESOURCES (return []) — handled by physical exam alone:
+     - A simple corneal abrasion or minor eye irritation (eye exam only, then discharge)
+     - Prescription refills with no new complaint
+     - A simple dental pain with no swelling (referred to a dentist)
+     - A minor rash, minor cold, or other complaint discharged after exam
+     - A simple sprain where only a splint/ace wrap is applied (splints are NOT resources)
+
+   CALIBRATED EXAMPLES:
+     - "Chest pain in a 55-year-old"  → ["labs", "ecg", "xray"]  (cardiac workup)
+     - "Twisted ankle, painful to walk"  → ["xray"]  (one resource — rule out fracture)
+     - "Cut needing stitches"  → ["simple_procedure"]  (one resource)
+     - "Burning when I urinate, no other symptoms"  → ["labs"]  (one resource — urinalysis)
+     - "Scratched my cornea taking out contacts"  → []  (eye exam only, no resource)
+     - "Need a refill on my blood pressure med"  → []
+     - "Abdominal pain with vomiting in a child"  → ["labs", "ultrasound"]  (two resources)
+     - "Severe headache + stiff neck + fever"  → ["labs", "ct"]  (rule out meningitis)
+
+   When unsure between 0 and 1 resource: if the patient will get a test, a lab, or a
+   procedure (not just an exam), count it. If they will only be examined and discharged
+   with a prescription or advice, return []. 
 
 DEFINITIONS OF KEY FIELDS (use these to decide what counts):
 
@@ -38,9 +62,9 @@ DEFINITIONS OF KEY FIELDS (use these to decide what counts):
 - `has_end_organ_symptoms`: in the context of high BP — severe headache, vision changes, chest pain, focal weakness, mental status change, severe nosebleed, or acute kidney/liver injury signs.
 - `has_high_risk_trauma_mechanism`: high-speed motor vehicle crash, pedestrian struck by vehicle, fall from significant height (>10 ft for adults, >3x height for kids), gunshot wound, stab wound, or rollover crash.
 - `is_actively_seizing`: actively having a seizure RIGHT NOW (not post-ictal, not "had a seizure earlier"). Use `has_reported_seizure` for prior seizures.
-- `has_signs_of_shock_or_hypoperfusion`: tachycardia + delayed capillary refill (>3-4 seconds), mottled or cool skin, weak/thready pulses, lethargy. Common in pediatric sepsis.
-- `is_hypotensive_for_age`: blood pressure below normal range for the patient's age. Adults: SBP < 90. Children: see age-appropriate norms.
-- `is_bradycardic_for_age`: heart rate below normal range for the patient's age. Adults: HR < 50. Infants: HR < 100. Children: see age-appropriate norms.
+- `has_signs_of_shock_or_hypoperfusion`: set TRUE only when the text describes MULTIPLE clear perfusion signs together — e.g., delayed capillary refill (>3-4 s) AND mottled/cool skin, or weak/thready pulses with lethargy/pallor. Tachycardia ALONE is NOT enough. A fast heart rate in a crying, frightened, or feverish child is expected and does not by itself indicate shock.
+- `is_hypotensive_for_age`: set TRUE only when blood pressure is CLEARLY below the age norm, or the text explicitly says the patient is hypotensive / in shock. Do NOT flag borderline or low-normal values. Adult threshold: SBP < 90. For children, use the floor formula SBP < 70 + (2 × age in years) — and even then, only flag if the value is clearly below it, not merely at the edge. When in doubt, leave FALSE.
+- `is_bradycardic_for_age`: set TRUE only when heart rate is clearly below the age norm. Adults: HR < 50. Infants: HR < 100. Do NOT flag a normal or low-normal rate. When in doubt, leave FALSE.
 - `is_late_pregnancy`: pregnant at 14 weeks gestation or beyond.
 - `pregnancy_status_confirmed_negative`: TRUE only if a confirmed negative pregnancy test result is mentioned. Default FALSE (safe default — ectopic pregnancy must not be missed).
 - `is_of_childbearing_age_or_pregnant`: female patient aged 12-55 OR known pregnant.

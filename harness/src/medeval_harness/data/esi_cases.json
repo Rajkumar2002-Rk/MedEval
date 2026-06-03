@@ -1,0 +1,334 @@
+[
+  {
+    "case_id": "ESI-001",
+    "title": "Corneal abrasion from contact lens",
+    "source": "Chapter 9, Practice Case 1",
+    "tags": ["ocular", "low-acuity"],
+    "notes": "Needs eye exam only, discharged with prescription. No resources.",
+    "input": {
+      "complaint": "I was taking my contacts out last night and I think I scratched my cornea. The light really bothers my eyes. My right eye is red and tearing.",
+      "patient_age": 27,
+      "patient_sex": "female",
+      "severity": 6
+    },
+    "expected": {
+      "esi_level": 5,
+      "decision_path": "C",
+      "expected_rules_fired": ["C3_no_resources"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-002",
+    "title": "Medication overdose with respiratory depression",
+    "source": "Chapter 9, Practice Case 2",
+    "tags": ["toxicology", "airway", "critical"],
+    "notes": "RR 10, SpO2 86% — cannot protect airway, needs intubation. SpO2 < 90 should fire A5.",
+    "input": {
+      "complaint": "EMS brought in this 18-year-old found lethargic and not acting right by her roommates. History of depression. Multiple superficial lacerations to both wrists. She is barely breathing.",
+      "patient_age": 18,
+      "patient_sex": "female",
+      "severity": 8,
+      "respiratory_rate": 10,
+      "oxygen_saturation": 86
+    },
+    "expected": {
+      "esi_level": 1,
+      "decision_path": "A",
+      "expected_rules_fired": ["A5_low_oxygen_saturation"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-003",
+    "title": "Self-inflicted gunshot wound to head, intubated",
+    "source": "Chapter 9, Practice Case 3",
+    "tags": ["trauma", "critical", "intubated"],
+    "notes": "Intubated, GCS 3. A1_intubated should fire.",
+    "input": {
+      "complaint": "EMS arrived with an unresponsive 19-year-old male with a single self-inflicted gunshot wound to the head. He was intubated by EMS. Before intubation his Glasgow Coma Scale was 3.",
+      "patient_age": 19,
+      "patient_sex": "male",
+      "severity": 10
+    },
+    "expected": {
+      "esi_level": 1,
+      "decision_path": "A",
+      "expected_rules_fired": ["A1_intubated"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-004",
+    "title": "Blood pressure medication refill",
+    "source": "Chapter 9, Practice Case 4",
+    "tags": ["low-acuity", "refill"],
+    "notes": "Prescription refill, BP controlled, no complaints. No resources.",
+    "input": {
+      "complaint": "I ran out of my blood pressure medicine and my doctor is on vacation. Can someone here write me a prescription? No other complaints.",
+      "patient_age": 56,
+      "patient_sex": "male",
+      "severity": 1,
+      "heart_rate": 76,
+      "systolic_bp": 128,
+      "diastolic_bp": 84,
+      "medical_history": ["hypertension"]
+    },
+    "expected": {
+      "esi_level": 5,
+      "decision_path": "C",
+      "expected_rules_fired": ["C3_no_resources"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-005",
+    "title": "Bicycle fall, wrist pain plus elbow laceration",
+    "source": "Chapter 9, Practice Case 5",
+    "tags": ["trauma", "orthopedic", "mid-acuity"],
+    "notes": "Needs X-ray of wrist AND suture of elbow laceration = 2 resources.",
+    "input": {
+      "complaint": "I fell off my bike and landed on my right arm. I have pain in my wrist area and a 2-centimeter laceration on my left elbow. My helmet saved me.",
+      "patient_age": 41,
+      "patient_sex": "male",
+      "severity": 5
+    },
+    "expected": {
+      "esi_level": 3,
+      "decision_path": "C",
+      "expected_rules_fired": ["C1_two_or_more_resources"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-006",
+    "title": "Shortness of breath, smoker on birth control",
+    "source": "Chapter 9, Practice Case 6",
+    "tags": ["respiratory", "high-risk", "pulmonary-embolism"],
+    "notes": "RR 32, SpO2 93%, smoker on BCP — high risk for PE. Handbook says ESI 2.",
+    "input": {
+      "complaint": "I have had shortness of breath for several hours. I am a smoker and I take birth control pills.",
+      "patient_age": 32,
+      "patient_sex": "female",
+      "severity": 5,
+      "respiratory_rate": 32,
+      "heart_rate": 96,
+      "systolic_bp": 126,
+      "diastolic_bp": 80,
+      "oxygen_saturation": 93
+    },
+    "expected": {
+      "esi_level": 2,
+      "decision_path": "B",
+      "expected_rules_fired": ["B15_moderate_respiratory_distress"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-007",
+    "title": "Near-drowning, child unresponsive",
+    "source": "Chapter 9, Practice Case 7",
+    "tags": ["pediatric", "critical", "unresponsive"],
+    "notes": "4-year-old near-drowning, breathing spontaneously but unresponsive. A7 should fire.",
+    "input": {
+      "complaint": "My 4-year-old was pulled out of the family pool by a neighbor who gave mouth-to-mouth. The child is now breathing on his own but continues to be unresponsive.",
+      "patient_age": 4,
+      "patient_age_months": 48,
+      "patient_sex": "male",
+      "severity": 10,
+      "heart_rate": 126,
+      "respiratory_rate": 28,
+      "systolic_bp": 80,
+      "diastolic_bp": 64,
+      "oxygen_saturation": 96
+    },
+    "expected": {
+      "esi_level": 1,
+      "decision_path": "A",
+      "expected_rules_fired": ["A7_unresponsive"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-008",
+    "title": "Child with abdominal pain and vomiting",
+    "source": "Chapter 9, Practice Case 8",
+    "tags": ["pediatric", "abdominal", "mid-acuity"],
+    "notes": "7-year-old, abdominal workup needs labs + CT/ultrasound = 2 resources.",
+    "input": {
+      "complaint": "My son woke up with a stomach ache. He refused to walk downstairs and is not interested in eating or playing. He just vomited.",
+      "patient_age": 7,
+      "patient_sex": "male",
+      "severity": 6,
+      "temperature_celsius": 38.0,
+      "respiratory_rate": 22,
+      "heart_rate": 88,
+      "systolic_bp": 84,
+      "diastolic_bp": 60,
+      "oxygen_saturation": 100
+    },
+    "expected": {
+      "esi_level": 3,
+      "decision_path": "C",
+      "expected_rules_fired": ["C1_two_or_more_resources"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-009",
+    "title": "Child with knee laceration",
+    "source": "Chapter 9, Practice Case 9",
+    "tags": ["pediatric", "trauma", "low-acuity"],
+    "notes": "Laceration needs suturing = 1 resource.",
+    "input": {
+      "complaint": "I was running across the playground and fell. I have a cut over my right knee. Immunizations are up to date.",
+      "patient_age": 6,
+      "patient_sex": "male",
+      "severity": 4
+    },
+    "expected": {
+      "esi_level": 4,
+      "decision_path": "C",
+      "expected_rules_fired": ["C2_one_resource"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-010",
+    "title": "Wrist injury after slipping on ice",
+    "source": "Chapter 9, Practice Case 10",
+    "tags": ["orthopedic", "low-acuity"],
+    "notes": "Needs X-ray to rule out fracture = 1 resource. Splint is not a resource.",
+    "input": {
+      "complaint": "I slipped on the ice and I hurt my wrist. There is no obvious deformity.",
+      "patient_age": 58,
+      "patient_sex": "female",
+      "severity": 5,
+      "medical_history": ["migraines"]
+    },
+    "expected": {
+      "esi_level": 4,
+      "decision_path": "C",
+      "expected_rules_fired": ["C2_one_resource"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-011",
+    "title": "Child fall with loss of consciousness",
+    "source": "Chapter 9, Practice Case 11",
+    "tags": ["pediatric", "trauma", "high-risk", "head-injury"],
+    "notes": "4-year-old, witnessed fall with LOC, change in consciousness. High risk.",
+    "input": {
+      "complaint": "My 4-year-old fell off the jungle gym at preschool, about a 4 foot fall. A witness says she hit her head and was unconscious for a couple of minutes. She is crying and asking for me. Her left arm is splinted.",
+      "patient_age": 4,
+      "patient_age_months": 48,
+      "patient_sex": "female",
+      "severity": 6,
+      "heart_rate": 162,
+      "respiratory_rate": 38
+    },
+    "expected": {
+      "esi_level": 2,
+      "decision_path": "B",
+      "expected_rules_fired": ["B22_increased_intracranial_pressure"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-012",
+    "title": "Suspected urinary tract infection",
+    "source": "Chapter 9, Practice Case 13",
+    "tags": ["genitourinary", "low-acuity"],
+    "notes": "Dysuria and frequency, no abdominal pain. Needs urinalysis = 1 resource (lab).",
+    "input": {
+      "complaint": "I think I have a urinary tract infection. I have burning when I urinate and I am going frequently. No abdominal pain or vaginal discharge.",
+      "patient_age": 52,
+      "patient_sex": "female",
+      "severity": 3,
+      "temperature_celsius": 36.3,
+      "heart_rate": 78,
+      "respiratory_rate": 14,
+      "systolic_bp": 142,
+      "diastolic_bp": 70
+    },
+    "expected": {
+      "esi_level": 4,
+      "decision_path": "C",
+      "expected_rules_fired": ["C2_one_resource"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-013",
+    "title": "Febrile neonate, 2 weeks old",
+    "source": "Chapter 9, Practice Case 14",
+    "tags": ["pediatric", "neonate", "fever", "high-risk"],
+    "notes": "T 101F (38.3C) in infant < 28 days. Must be ESI 2 regardless of appearance.",
+    "input": {
+      "complaint": "My pediatrician told me to bring him in because of his fever. He is 2 weeks old, an uncomplicated vaginal delivery, and is otherwise acting appropriately.",
+      "patient_age": 0,
+      "patient_age_months": 0,
+      "patient_sex": "male",
+      "severity": 4,
+      "temperature_celsius": 38.3,
+      "heart_rate": 154,
+      "respiratory_rate": 42,
+      "oxygen_saturation": 100
+    },
+    "expected": {
+      "esi_level": 2,
+      "decision_path": "B",
+      "expected_rules_fired": ["B45_febrile_neonate_under_28_days"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-014",
+    "title": "Motor vehicle crash with shock",
+    "source": "Chapter 9, Practice Case 16",
+    "tags": ["trauma", "shock", "critical"],
+    "notes": "Unrestrained driver, 45 mph, BP 74/50, HR 132, RR 36 — signs of shock. ESI 1.",
+    "input": {
+      "complaint": "Paramedics arrived with a 16-year-old unrestrained driver who hit a tree at about 45 miles per hour. The passenger side had significant damage. He was moaning but moving all extremities. He looks pale.",
+      "patient_age": 16,
+      "patient_sex": "male",
+      "severity": 9,
+      "systolic_bp": 74,
+      "diastolic_bp": 50,
+      "heart_rate": 132,
+      "respiratory_rate": 36,
+      "oxygen_saturation": 99
+    },
+    "expected": {
+      "esi_level": 1,
+      "decision_path": "A",
+      "expected_rules_fired": ["A10_shock_or_hypoperfusion"],
+      "tolerance": 0
+    }
+  },
+  {
+    "case_id": "ESI-015",
+    "title": "Smoke inhalation with airway compromise",
+    "source": "Chapter 9, Practice Case 22",
+    "tags": ["environmental", "airway", "critical"],
+    "notes": "Hoarse, sore throat, working hard to breathe after smoke inhalation. Handbook says ESI 1 (likely needs intubation). May reveal a gap if our engine returns ESI 2 via B42.",
+    "input": {
+      "complaint": "The smoke was so bad I just couldn't breathe. I went into my burning apartment to rescue my cat. I am hoarse, my throat is sore, and I am coughing. I am working hard to breathe. I have asthma.",
+      "patient_age": 26,
+      "patient_sex": "female",
+      "severity": 7,
+      "temperature_celsius": 36.7,
+      "respiratory_rate": 40,
+      "heart_rate": 114,
+      "systolic_bp": 108,
+      "diastolic_bp": 74
+    },
+    "expected": {
+      "esi_level": 1,
+      "decision_path": "A",
+      "expected_rules_fired": ["A4_severe_respiratory_distress"],
+      "tolerance": 1
+    }
+  }
+]
