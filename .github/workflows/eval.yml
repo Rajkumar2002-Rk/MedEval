@@ -1,0 +1,53 @@
+name: MedEval Evaluation
+
+# Runs the medeval-harness against the live agent and fails the build if
+# exact accuracy drops below the threshold. This catches triage regressions
+# automatically on every relevant change.
+
+on:
+  # Run when the agent prompts, rules, or the harness itself change.
+  push:
+    branches: [main]
+    paths:
+      - "backend/agent/**"
+      - "backend/rules/**"
+      - "harness/**"
+      - ".github/workflows/eval.yml"
+  # Allow running on demand from the Actions tab.
+  workflow_dispatch:
+  # Weekly safety net (Mondays 09:00 UTC) to catch drift.
+  schedule:
+    - cron: "0 9 * * 1"
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the harness
+        run: pip install ./harness
+
+      - name: Run evaluation against the live agent
+        env:
+          MEDEVAL_API_KEY: ${{ secrets.MEDEVAL_API_KEY }}
+          MEDEVAL_API_URL: ${{ secrets.MEDEVAL_API_URL }}
+        run: |
+          medeval-harness evaluate \
+            --api-url "$MEDEVAL_API_URL" \
+            --api-key "$MEDEVAL_API_KEY" \
+            --out reports/ci-report.json \
+            --fail-under 60
+
+      - name: Upload evaluation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-report
+          path: reports/ci-report.json
