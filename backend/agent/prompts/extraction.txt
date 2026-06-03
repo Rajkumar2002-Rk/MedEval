@@ -51,9 +51,26 @@ CRITICAL RULES:
      - "Abdominal pain with vomiting in a child"  → ["labs", "ultrasound"]  (two resources)
      - "Severe headache + stiff neck + fever"  → ["labs", "ct"]  (rule out meningitis)
 
+   IMPORTANT — medical workups usually need 2+ resources. Do NOT under-count.
+   When a patient presents with a SYMPTOM that needs investigation (not just a minor
+   injury or a refill), they typically need labs PLUS something else. Apply these rules:
+
+     - Vomiting / diarrhea / dehydration  → ["labs", "iv_fluids", "iv_or_im_medications"]
+       (bloodwork + IV hydration + an IV anti-nausea med are THREE separate resources)
+     - Possible blood clot (DVT): leg swelling/pain, calf pain  → ["labs", "ultrasound"]
+     - Abdominal pain needing workup  → ["labs", "ct"] or ["labs", "ultrasound"]
+     - Cellulitis / skin infection / red-hot-swollen area  → ["labs", "iv_or_im_medications"]
+     - Vertigo / dizziness with vomiting  → ["iv_fluids", "iv_or_im_medications"]
+     - Migraine with vomiting  → ["iv_or_im_medications", "iv_fluids"]
+       (an IV pain med AND an IV antiemetic AND fluids are separate resources)
+     - Fever workup in a sick-appearing adult  → ["labs"] plus imaging or IV meds as fit
+
+   COUNT IV fluids and EACH class of IV/IM medication SEPARATELY. "IV fluids and an
+   anti-nausea injection" = 2 resources, not 1.
+
    When unsure between 0 and 1 resource: if the patient will get a test, a lab, or a
    procedure (not just an exam), count it. If they will only be examined and discharged
-   with a prescription or advice, return []. 
+   with a prescription or advice, return [].
 
 DEFINITIONS OF KEY FIELDS (use these to decide what counts):
 
@@ -62,6 +79,7 @@ DEFINITIONS OF KEY FIELDS (use these to decide what counts):
 - `has_end_organ_symptoms`: in the context of high BP — severe headache, vision changes, chest pain, focal weakness, mental status change, severe nosebleed, or acute kidney/liver injury signs.
 - `has_high_risk_trauma_mechanism`: high-speed motor vehicle crash, pedestrian struck by vehicle, fall from significant height (>10 ft for adults, >3x height for kids), gunshot wound, stab wound, or rollover crash.
 - `is_actively_seizing`: actively having a seizure RIGHT NOW (not post-ictal, not "had a seizure earlier"). Use `has_reported_seizure` for prior seizures.
+- `has_severe_respiratory_distress`, `is_unresponsive`, `has_acute_mental_status_change`: set TRUE for any patient who is post-resuscitation, post-cardiac-arrest, just received CPR or defibrillation, or arrives obtunded / not responding normally. A patient who collapsed and was resuscitated remains critically unstable even if a pulse returned — treat them as requiring immediate life-saving intervention.
 - `has_signs_of_shock_or_hypoperfusion`: set TRUE only when the text describes MULTIPLE clear perfusion signs together — e.g., delayed capillary refill (>3-4 s) AND mottled/cool skin, or weak/thready pulses with lethargy/pallor. Tachycardia ALONE is NOT enough. A fast heart rate in a crying, frightened, or feverish child is expected and does not by itself indicate shock.
 - `is_hypotensive_for_age`: set TRUE only when blood pressure is CLEARLY below the age norm, or the text explicitly says the patient is hypotensive / in shock. Do NOT flag borderline or low-normal values. Adult threshold: SBP < 90. For children, use the floor formula SBP < 70 + (2 × age in years) — and even then, only flag if the value is clearly below it, not merely at the edge. When in doubt, leave FALSE.
 - `is_bradycardic_for_age`: set TRUE only when heart rate is clearly below the age norm. Adults: HR < 50. Infants: HR < 100. Do NOT flag a normal or low-normal rate. When in doubt, leave FALSE.
