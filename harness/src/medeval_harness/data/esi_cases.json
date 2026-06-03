@@ -330,5 +330,610 @@
       "expected_rules_fired": ["A4_severe_respiratory_distress"],
       "tolerance": 1
     }
+  },
+    {
+    "case_id": "ESI-016",
+    "title": "Red swollen great toe in diabetic",
+    "source": "Chapter 9, Practice Case 12",
+    "tags": ["podiatric", "infection", "mid-acuity"],
+    "notes": "Likely gout/cellulitis. Needs labs + IV antibiotics = 2 resources.",
+    "input": {
+      "complaint": "My right foot hurts. The great toe and foot are red, warm, swollen, and tender to touch. I deny any injury.",
+      "patient_age": 60,
+      "patient_sex": "male",
+      "severity": 6,
+      "temperature_celsius": 37.4,
+      "heart_rate": 82,
+      "respiratory_rate": 18,
+      "systolic_bp": 146,
+      "diastolic_bp": 70,
+      "oxygen_saturation": 99,
+      "medical_history": ["diabetes", "psoriasis"]
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+    {
+    "case_id": "ESI-017",
+    "title": "Postpartum mastitis with fever",
+    "source": "Chapter 9, Practice Case 15",
+    "tags": ["obstetric", "infection", "mid-acuity"],
+    "notes": "Needs labs + IV antibiotics = 2 resources.",
+    "input": {
+      "complaint": "My right breast is so sore, my nipples are cracked, and now I have a fever. I am 3 months postpartum and recently went back to work.",
+      "patient_age": 34,
+      "patient_sex": "female",
+      "severity": 5,
+      "temperature_celsius": 39.3,
+      "heart_rate": 90,
+      "respiratory_rate": 18,
+      "systolic_bp": 108,
+      "diastolic_bp": 60
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-018",
+    "title": "Asthmatic with likely pneumonia",
+    "source": "Chapter 9, Practice Case 17",
+    "tags": ["respiratory", "infection", "mid-acuity"],
+    "notes": "Not in acute distress. Needs labs + chest x-ray + IV antibiotics.",
+    "input": {
+      "complaint": "I have asthma and have had a cold for a week. A few days ago I started wheezing, then developed a cough and a fever of 103.",
+      "patient_age": 45,
+      "patient_sex": "female",
+      "severity": 5,
+      "temperature_celsius": 38.7,
+      "heart_rate": 92,
+      "respiratory_rate": 24,
+      "systolic_bp": 148,
+      "diastolic_bp": 86,
+      "oxygen_saturation": 97,
+      "medical_history": ["asthma"]
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-019",
+    "title": "Toothache without swelling",
+    "source": "Chapter 9, Practice Case 18",
+    "tags": ["dental", "low-acuity"],
+    "notes": "Pain 9/10 but no abscess/cellulitis. Exam only, referred to dentist. No resources.",
+    "input": {
+      "complaint": "I have an awful toothache in my right lower jaw. I lost my dental insurance so I haven't seen a dentist for a couple of years. No swelling that I can see.",
+      "patient_age": 38,
+      "patient_sex": "male",
+      "severity": 9
+    },
+    "expected": { "esi_level": 5, "decision_path": "C", "expected_rules_fired": ["C3_no_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-020",
+    "title": "Vomiting and diarrhea, possible food poisoning",
+    "source": "Chapter 9, Practice Case 19",
+    "tags": ["gastrointestinal", "mid-acuity"],
+    "notes": "Needs labs + IV fluids + IV antiemetic. Not high risk or severe pain.",
+    "input": {
+      "complaint": "I think I have food poisoning. I have been vomiting all night and now I have diarrhea, with abdominal cramping. No fever or chills.",
+      "patient_age": 33,
+      "patient_sex": "female",
+      "severity": 5,
+      "temperature_celsius": 36.0,
+      "heart_rate": 96,
+      "respiratory_rate": 16,
+      "systolic_bp": 116,
+      "diastolic_bp": 74
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-021",
+    "title": "Migraine with vomiting",
+    "source": "Chapter 9, Practice Case 20",
+    "tags": ["neurological", "mid-acuity"],
+    "notes": "Known migraine history. Needs pain med + antiemetic + fluids. Pain only 6/10.",
+    "input": {
+      "complaint": "My migraine started early this morning and I can't get it under control. I just keep vomiting. Can I lie down somewhere? I have a history of migraines.",
+      "patient_age": 37,
+      "patient_sex": "female",
+      "severity": 6,
+      "temperature_celsius": 36.7,
+      "heart_rate": 102,
+      "respiratory_rate": 20,
+      "systolic_bp": 118,
+      "diastolic_bp": 62,
+      "oxygen_saturation": 98,
+      "medical_history": ["migraines"]
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-022",
+    "title": "Finger laceration from bagel slicing",
+    "source": "Chapter 9, Practice Case 21",
+    "tags": ["trauma", "low-acuity"],
+    "notes": "Needs laceration repair = 1 resource. Tetanus booster is NOT a resource.",
+    "input": {
+      "complaint": "I cut my finger trying to slice a bagel. There is a 2-centimeter cut on my left first finger. Bleeding is controlled. My last tetanus shot was 10 years ago.",
+      "patient_age": 28,
+      "patient_sex": "male",
+      "severity": 4
+    },
+    "expected": { "esi_level": 4, "decision_path": "C", "expected_rules_fired": ["C2_one_resource"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-023",
+    "title": "Hyperemesis in early pregnancy",
+    "source": "Chapter 9, Practice Case 23",
+    "tags": ["obstetric", "mid-acuity", "dehydration"],
+    "notes": "7 weeks pregnant, dehydrated. Needs labs + IV fluids + IV antiemetic.",
+    "input": {
+      "complaint": "I am 7 weeks pregnant and every time I try to eat something I throw up. My doctor sent me to the ED because he thinks I am getting dehydrated. My lips are dry and cracked.",
+      "patient_age": 27,
+      "patient_sex": "female",
+      "severity": 3,
+      "temperature_celsius": 36.1,
+      "heart_rate": 104,
+      "respiratory_rate": 18,
+      "systolic_bp": 104,
+      "diastolic_bp": 68,
+      "oxygen_saturation": 99
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-024",
+    "title": "Leg ache after prolonged sitting",
+    "source": "Chapter 9, Practice Case 24",
+    "tags": ["vascular", "mid-acuity", "dvt"],
+    "notes": "DVT risk after long car ride. Needs labs + lower-extremity vascular ultrasound.",
+    "input": {
+      "complaint": "I have this aching pain in my left leg. I have been sitting in a car for the last 2 days driving my daughter to college. It just ached the whole ride home. No other complaints.",
+      "patient_age": 52,
+      "patient_sex": "female",
+      "severity": 4,
+      "temperature_celsius": 36.7,
+      "heart_rate": 86,
+      "respiratory_rate": 16,
+      "systolic_bp": 148,
+      "diastolic_bp": 90
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-025",
+    "title": "Elderly fall on anticoagulation",
+    "source": "Chapter 9, Practice Case 25",
+    "tags": ["trauma", "high-risk", "head-injury", "geriatric"],
+    "notes": "On warfarin + fall = high risk for internal bleeding even with normal vitals. Needs head CT.",
+    "input": {
+      "complaint": "EMS brought in an 87-year-old male who fell and hit his head. He is awake, alert, and oriented and remembers the fall. He has atrial fibrillation and takes warfarin.",
+      "patient_age": 87,
+      "patient_sex": "male",
+      "severity": 4,
+      "medical_history": ["atrial fibrillation", "anticoagulation"]
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B22_increased_intracranial_pressure"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-026",
+    "title": "High-speed crash, abdominal pain",
+    "source": "Chapter 9, Practice Case 27",
+    "tags": ["trauma", "high-risk"],
+    "notes": "High-risk mechanism; needs trauma team. Stable vitals so not ESI 1.",
+    "input": {
+      "complaint": "EMS arrived with a 17-year-old restrained driver in a high-speed motor vehicle crash. He is immobilized on a backboard and complains of abdominal pain. He has multiple lacerations on his left arm.",
+      "patient_age": 17,
+      "patient_sex": "male",
+      "severity": 6,
+      "systolic_bp": 102,
+      "diastolic_bp": 60,
+      "heart_rate": 86,
+      "respiratory_rate": 28,
+      "oxygen_saturation": 96
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B32_high_risk_trauma_mechanism"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-027",
+    "title": "Back pain medication refill request",
+    "source": "Chapter 9, Practice Case 28",
+    "tags": ["low-acuity"],
+    "notes": "Pain 10/10 reported but no red flags, normal vitals, exam only. No resources.",
+    "input": {
+      "complaint": "I just need another prescription for pain medication. I was here 10 days ago and ran out. I hurt my back at work and it's still bothering me. No numbness, tingling, or bladder or bowel issues.",
+      "patient_age": 27,
+      "patient_sex": "male",
+      "severity": 10
+    },
+    "expected": { "esi_level": 5, "decision_path": "C", "expected_rules_fired": ["C3_no_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-028",
+    "title": "Open fracture of lower leg",
+    "source": "Chapter 9, Practice Case 29",
+    "tags": ["trauma", "orthopedic", "mid-acuity"],
+    "notes": "Open fracture, intact pulses. Needs x-ray + labs + IV antibiotics + IV pain med.",
+    "input": {
+      "complaint": "EMS arrived with a 32-year-old female who fell off a stepladder cleaning her gutters. She has an obvious open fracture of her right lower leg. She has +2 pedal pulse, warm toes, and can wiggle them.",
+      "patient_age": 32,
+      "patient_sex": "female",
+      "severity": 7
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-029",
+    "title": "Ski crash, intubated at scene",
+    "source": "Chapter 9, Practice Case 30",
+    "tags": ["trauma", "critical", "intubated"],
+    "notes": "Intubated and unresponsive. A1 fires.",
+    "input": {
+      "complaint": "A medical helicopter is en route with a 16-year-old male who was downhill skiing and hit a tree. He lost control and hit his head. He was intubated at the scene and remains unresponsive.",
+      "patient_age": 16,
+      "patient_sex": "male",
+      "severity": 10
+    },
+    "expected": { "esi_level": 1, "decision_path": "A", "expected_rules_fired": ["A1_intubated"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-030",
+    "title": "Table saw fingertip amputation",
+    "source": "Chapter 9, Practice Case 31",
+    "tags": ["trauma", "mid-acuity"],
+    "notes": "Needs IV pain med + laceration repair (+ possible x-ray/antibiotics) = 2+ resources.",
+    "input": {
+      "complaint": "I was using my table saw and my hand slipped. I think I lost a couple of fingertips. My left hand is wrapped in a bloody cloth.",
+      "patient_age": 45,
+      "patient_sex": "male",
+      "severity": 6
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-031",
+    "title": "Lower abdominal pain with spotting, prior ectopic",
+    "source": "Chapter 9, Practice Case 32",
+    "tags": ["gynecological", "mid-acuity"],
+    "notes": "Hemodynamically stable, generalized pain. Needs labs + ultrasound. Ectopic on differential but stable.",
+    "input": {
+      "complaint": "I want to be checked. I have had low abdominal pain for about 4 days and this morning I began spotting. No nausea, vomiting, diarrhea, or urinary symptoms. My last menstrual period was 7 weeks ago. I had a previous ectopic pregnancy.",
+      "patient_age": 27,
+      "patient_sex": "female",
+      "severity": 6,
+      "temperature_celsius": 36.7,
+      "heart_rate": 66,
+      "respiratory_rate": 14,
+      "systolic_bp": 106,
+      "diastolic_bp": 68
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-032",
+    "title": "Swollen calf, possible DVT",
+    "source": "Chapter 9, Practice Case 33",
+    "tags": ["vascular", "mid-acuity", "dvt"],
+    "notes": "DVT risk. Needs labs + Doppler ultrasound. No chest pain or SOB so not ESI 2.",
+    "input": {
+      "complaint": "My right leg is swollen and my calf hurts. I deny chest pain or shortness of breath. I have type 2 diabetes and high blood pressure.",
+      "patient_age": 47,
+      "patient_sex": "female",
+      "severity": 6,
+      "temperature_celsius": 36.7,
+      "heart_rate": 78,
+      "respiratory_rate": 24,
+      "systolic_bp": 158,
+      "diastolic_bp": 82,
+      "oxygen_saturation": 98,
+      "medical_history": ["diabetes", "hypertension"]
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-033",
+    "title": "Missed dialysis, weakness",
+    "source": "Chapter 9, Practice Case 35",
+    "tags": ["renal", "high-risk"],
+    "notes": "Dialysis patient who missed treatment = high risk for hyperkalemia.",
+    "input": {
+      "complaint": "EMS brought in a 54-year-old female with chronic renal failure who did not go to dialysis yesterday because she was feeling too weak.",
+      "patient_age": 54,
+      "patient_sex": "female",
+      "severity": 4,
+      "medical_history": ["chronic renal failure", "dialysis"]
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B28_dialysis_missed_or_complication"], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-034",
+    "title": "Unstable tachycardia",
+    "source": "Chapter 9, Practice Case 37",
+    "tags": ["cardiac", "critical"],
+    "notes": "HR 178, BP 82/60, cool diaphoretic — unstable. Needs immediate intervention (cardioversion). Handbook says ESI 1.",
+    "input": {
+      "complaint": "I just don't feel right. I have a rapid heart rate and can barely catch my breath, with a funny pressure feeling in my chest. My skin feels cool and sweaty.",
+      "patient_age": 21,
+      "patient_sex": "female",
+      "severity": 7,
+      "heart_rate": 178,
+      "respiratory_rate": 32,
+      "systolic_bp": 82,
+      "diastolic_bp": 60
+    },
+    "expected": { "esi_level": 1, "decision_path": "A", "expected_rules_fired": [], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-035",
+    "title": "Spontaneous pneumothorax",
+    "source": "Chapter 9, Practice Case 41",
+    "tags": ["respiratory", "high-risk"],
+    "notes": "Tall thin young male, sudden SOB after coughing, RR 36 SpO2 92. High risk.",
+    "input": {
+      "complaint": "I was smoking a cigarette and had a coughing fit, and now I feel short of breath. I am a tall, thin 19-year-old man.",
+      "patient_age": 19,
+      "patient_sex": "male",
+      "severity": 5,
+      "temperature_celsius": 36.7,
+      "heart_rate": 102,
+      "respiratory_rate": 36,
+      "systolic_bp": 128,
+      "diastolic_bp": 76,
+      "oxygen_saturation": 92
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B16_suspected_spontaneous_pneumothorax"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-036",
+    "title": "Thunderclap headache in pregnancy, now unresponsive",
+    "source": "Chapter 9, Practice Case 42",
+    "tags": ["neurological", "critical", "obstetric"],
+    "notes": "Sudden severe headache after exertion, now unresponsive to voice, vomited — head bleed, airway risk. ESI 1.",
+    "input": {
+      "complaint": "EMS brought in a 26-year-old, 28 weeks pregnant, with sudden onset of a severe headache that began after she moved her bowels. She is now moaning and does not respond to voice. She vomited about 5 minutes ago.",
+      "patient_age": 26,
+      "patient_sex": "female",
+      "severity": 9
+    },
+    "expected": { "esi_level": 1, "decision_path": "A", "expected_rules_fired": [], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-037",
+    "title": "Facial droop, suspected stroke",
+    "source": "Chapter 9, Practice Case 43",
+    "tags": ["neurological", "high-risk", "stroke"],
+    "notes": "Facial droop, can't close left eye, normal vitals. Stroke = high risk but not lifesaving-now, so ESI 2.",
+    "input": {
+      "complaint": "I think I'm having a stroke. I looked in the mirror this morning and the corner of my mouth is drooping and I can't close my left eye.",
+      "patient_age": 40,
+      "patient_sex": "female",
+      "severity": 6
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B18_suspected_stroke"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-038",
+    "title": "Transient ischemic attack",
+    "source": "Chapter 9, Practice Case 44",
+    "tags": ["neurological", "high-risk", "geriatric"],
+    "notes": "Slurred speech + arm weakness that resolved (TIA). High risk, can't wait.",
+    "input": {
+      "complaint": "An 88-year-old female had an episode this morning of slurred speech and weakness of her left arm that lasted about 45 minutes. She has a history of a previous stroke and takes aspirin daily. She is now alert and oriented with clear speech and equal hand grasps.",
+      "patient_age": 88,
+      "patient_sex": "female",
+      "severity": 4,
+      "medical_history": ["prior stroke"]
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B18_suspected_stroke"], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-039",
+    "title": "Postpartum hemorrhage",
+    "source": "Chapter 9, Practice Case 48",
+    "tags": ["obstetric", "critical", "hemorrhage"],
+    "notes": "Heavy bleeding, BP 86/40, HR 132, pale, about to pass out. Shock — ESI 1.",
+    "input": {
+      "complaint": "I suddenly started bleeding and passing clots the size of oranges. I am 10 days postpartum and never did this with my other pregnancies. Can I lie down before I pass out? I feel pale and faint.",
+      "patient_age": 34,
+      "patient_sex": "female",
+      "severity": 8,
+      "systolic_bp": 86,
+      "diastolic_bp": 40,
+      "heart_rate": 132,
+      "respiratory_rate": 22,
+      "oxygen_saturation": 98
+    },
+    "expected": { "esi_level": 1, "decision_path": "A", "expected_rules_fired": ["A10_shock_or_hypoperfusion"], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-040",
+    "title": "Mild asthma exacerbation needing nebulizer",
+    "source": "Chapter 9, Practice Case 49",
+    "tags": ["respiratory", "low-acuity"],
+    "notes": "Cold then wheezing, normal vitals, no fever. Needs one nebulizer treatment = 1 resource.",
+    "input": {
+      "complaint": "I have had a cold for a few days and today I started wheezing. When this happens I just need one of those breathing treatments. I have a history of asthma.",
+      "patient_age": 39,
+      "patient_sex": "female",
+      "severity": 3,
+      "temperature_celsius": 36.7,
+      "heart_rate": 88,
+      "respiratory_rate": 22,
+      "systolic_bp": 130,
+      "diastolic_bp": 80,
+      "oxygen_saturation": 99,
+      "medical_history": ["asthma"]
+    },
+    "expected": { "esi_level": 4, "decision_path": "C", "expected_rules_fired": ["C2_one_resource"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-041",
+    "title": "Possible compartment syndrome under cast",
+    "source": "Chapter 9, Practice Case 50",
+    "tags": ["orthopedic", "high-risk"],
+    "notes": "New cast + swelling + unbearable pain + decreased circulation/sensation/movement = compartment syndrome.",
+    "input": {
+      "complaint": "I was seen last night for my fractured wrist and they put this cast on. Now my hand is really swollen and the cast is cutting into my fingers. The pain is unbearable, and my fingers feel numb and hard to move.",
+      "patient_age": 45,
+      "patient_sex": "male",
+      "severity": 9
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B34_compartment_syndrome_or_neurovascular_compromise"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-042",
+    "title": "Post-cardiac-arrest, return of circulation",
+    "source": "Chapter 9, Practice Case 51",
+    "tags": ["cardiac", "critical"],
+    "notes": "Collapsed, CPR, defibrillated once, ROSC. Still needs lifesaving interventions. ESI 1.",
+    "input": {
+      "complaint": "A 58-year-old male collapsed while shoveling snow. Bystander CPR was started immediately and he was defibrillated once by paramedics with return of a pulse. He arrives with cold saline infusing per the cardiac arrest protocol.",
+      "patient_age": 58,
+      "patient_sex": "male",
+      "severity": 10
+    },
+    "expected": { "esi_level": 1, "decision_path": "A", "expected_rules_fired": [], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-043",
+    "title": "Positional vertigo with vomiting",
+    "source": "Chapter 9, Practice Case 56",
+    "tags": ["neurological", "mid-acuity"],
+    "notes": "Likely labyrinthitis. Needs IV fluids + IV antiemetic = 2 resources.",
+    "input": {
+      "complaint": "I feel okay when I lie perfectly still, but if I sit up, turn over, or move my head the room starts to spin and I have to throw up. EMS brought me in because of dizziness and nausea every time I move.",
+      "patient_age": 42,
+      "patient_sex": "male",
+      "severity": 5,
+      "temperature_celsius": 36.2,
+      "heart_rate": 90,
+      "respiratory_rate": 16,
+      "systolic_bp": 130,
+      "diastolic_bp": 82,
+      "oxygen_saturation": 99
+    },
+    "expected": { "esi_level": 3, "decision_path": "C", "expected_rules_fired": ["C1_two_or_more_resources"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-044",
+    "title": "Chest pressure after exertion, diaphoretic",
+    "source": "Chapter 9, Practice Case 59",
+    "tags": ["cardiac", "critical"],
+    "notes": "Likely MI: pressure after shoveling, nausea, SOB, cool clammy skin. Handbook says ESI 1.",
+    "input": {
+      "complaint": "I have this pressure in my chest that started after shoveling wet snow. Now I am nauseous and short of breath, and my skin feels cool and clammy.",
+      "patient_age": 60,
+      "patient_sex": "male",
+      "severity": 8,
+      "medical_history": ["hypertension"]
+    },
+    "expected": { "esi_level": 1, "decision_path": "A", "expected_rules_fired": [], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-045",
+    "title": "Sore throat, possible strep",
+    "source": "Chapter 9, Practice Case 65",
+    "tags": ["ent", "low-acuity"],
+    "notes": "Fever + sore throat, able to swallow. Needs a rapid strep test = 1 resource (lab).",
+    "input": {
+      "complaint": "I have a fever and a sore throat. I have finals this week and I'm scared this is strep. I can still drink and swallow okay.",
+      "patient_age": 20,
+      "patient_sex": "female",
+      "severity": 4,
+      "temperature_celsius": 38.3,
+      "heart_rate": 88,
+      "respiratory_rate": 16,
+      "systolic_bp": 118,
+      "diastolic_bp": 72
+    },
+    "expected": { "esi_level": 4, "decision_path": "C", "expected_rules_fired": ["C2_one_resource"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-046",
+    "title": "Gunshot wound to chest",
+    "source": "Chapter 9, Practice Case 69",
+    "tags": ["trauma", "critical", "penetrating"],
+    "notes": "Single GSW to left chest. Needs airway/fluid/trauma team. ESI 1.",
+    "input": {
+      "complaint": "EMS arrived with a 17-year-old with a single gunshot wound to the left chest. He needs the trauma team.",
+      "patient_age": 17,
+      "patient_sex": "male",
+      "severity": 10
+    },
+    "expected": { "esi_level": 1, "decision_path": "A", "expected_rules_fired": [], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-047",
+    "title": "Ripping abdominal pain, possible AAA",
+    "source": "Chapter 9, Practice Case 71",
+    "tags": ["abdominal", "critical", "aaa"],
+    "notes": "Severe ripping pain, HR 122, BP 88/68, cool diaphoretic — shock from likely AAA. ESI 1.",
+    "input": {
+      "complaint": "I have severe abdominal pain. It feels like someone is ripping me apart. It started about 30 minutes ago and I rate it 20 out of 10. I have high blood pressure. My skin feels cool and sweaty.",
+      "patient_age": 76,
+      "patient_sex": "male",
+      "severity": 10,
+      "heart_rate": 122,
+      "systolic_bp": 88,
+      "diastolic_bp": 68,
+      "respiratory_rate": 24,
+      "oxygen_saturation": 94,
+      "medical_history": ["hypertension"]
+    },
+    "expected": { "esi_level": 1, "decision_path": "A", "expected_rules_fired": ["A10_shock_or_hypoperfusion"], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-048",
+    "title": "Peritonsillar abscess with airway concern",
+    "source": "Chapter 9, Practice Case 74",
+    "tags": ["ent", "high-risk", "airway"],
+    "notes": "Voice change + difficulty swallowing + one-sided throat swelling — airway risk.",
+    "input": {
+      "complaint": "My throat is on fire. It started a couple of days ago and keeps getting worse. Now I can barely swallow, my friends say my voice sounds different, and I see a big swelling on one side of my throat.",
+      "patient_age": 19,
+      "patient_sex": "female",
+      "severity": 7,
+      "temperature_celsius": 38.7,
+      "heart_rate": 92,
+      "respiratory_rate": 24,
+      "systolic_bp": 122,
+      "diastolic_bp": 80,
+      "oxygen_saturation": 100
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B14_drooling_or_stridor"], "tolerance": 1 }
+  },
+  {
+    "case_id": "ESI-049",
+    "title": "Acute psychosis, safety risk",
+    "source": "Chapter 9, Practice Case 76",
+    "tags": ["mental-health", "high-risk"],
+    "notes": "Delusional, was screaming in traffic, refuses assessment. Safety = high risk.",
+    "input": {
+      "complaint": "Police escorted in a disheveled 23-year-old handcuffed male. He had been standing in the middle of highway traffic screaming about the end of the world. He claims he was sent from Mars as the savior of the world. He refuses to answer questions or let anyone take vital signs.",
+      "patient_age": 23,
+      "patient_sex": "male",
+      "severity": 5
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B38_psychotic_or_violent"], "tolerance": 0 }
+  },
+  {
+    "case_id": "ESI-050",
+    "title": "Elderly severe abdominal pain with vomiting",
+    "source": "Chapter 9, Practice Case 80",
+    "tags": ["abdominal", "high-risk", "geriatric"],
+    "notes": "82yo, excruciating generalized abdominal pain + vomiting, prior MI. Elderly severe abdominal pain = high risk.",
+    "input": {
+      "complaint": "An 82-year-old called 911 because of excruciating generalized abdominal pain and vomiting that started a few hours ago. She is moaning in pain but able to tell you she had a heart attack 6 years ago.",
+      "patient_age": 82,
+      "patient_sex": "female",
+      "severity": 10,
+      "temperature_celsius": 36.7,
+      "heart_rate": 102,
+      "respiratory_rate": 28,
+      "systolic_bp": 146,
+      "diastolic_bp": 80,
+      "oxygen_saturation": 98,
+      "medical_history": ["prior myocardial infarction"]
+    },
+    "expected": { "esi_level": 2, "decision_path": "B", "expected_rules_fired": ["B23_elderly_severe_abdominal_pain"], "tolerance": 0 }
   }
 ]
