@@ -3,6 +3,9 @@
 > Healthcare AI triage assistant where deterministic Python rules make the safety-critical decision and an LLM only writes the explanation. Built on the AHRQ ESI Handbook v4.
 
 [![Phase 1](https://img.shields.io/badge/Phase_1-shipped-22c55e)]()
+[![Phase 2](https://img.shields.io/badge/Phase_2-shipped-22c55e)]()
+[![PyPI](https://img.shields.io/pypi/v/medeval-harness?label=medeval-harness&color=3775A9)](https://pypi.org/project/medeval-harness/)
+[![CI](https://github.com/Rajkumar2002-Rk/MedEval/actions/workflows/eval.yml/badge.svg)](https://github.com/Rajkumar2002-Rk/MedEval/actions/workflows/eval.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)]()
 [![Python](https://img.shields.io/badge/python-3.12+-blue)]()
 [![Docker](https://img.shields.io/badge/docker-ready-2496ED)]()
@@ -11,7 +14,7 @@
 
 ## 🌐 Live Demo
 
-**Try it:** [http://3.239.122.143:5173](http://3.239.122.143:5173)
+**Try it:** [https://medeval.rajkumarai.dev](https://medeval.rajkumarai.dev) 🔒
 
 > The demo is gated by an API key. Reach out if you'd like the key to try it.
 
@@ -78,7 +81,8 @@ Patient-facing message
 | Observability | Langfuse Cloud (per-call traces, latency, tokens) |
 | Auth | API key in `X-API-Key` header |
 | Containerization | Docker (multi-stage frontend build), Docker Compose |
-| Deployment | AWS EC2 `t3.micro`, Ubuntu 24.04 |
+| Deployment | AWS EC2 `t3.micro`, Ubuntu 24.04, Nginx reverse proxy, HTTPS via Let's Encrypt |
+| Evaluation | `medeval-harness` (published on PyPI), GitHub Actions CI |
 
 ---
 
@@ -134,6 +138,14 @@ On the EC2 host:
 docker compose up -d
 ```
 
+In production, an **Nginx reverse proxy** on the host terminates TLS (Let's Encrypt,
+auto-renewing) and routes traffic:
+
+```
+https://medeval.rajkumarai.dev/      → frontend container (:5173)
+https://medeval.rajkumarai.dev/api/  → backend container  (:8000)
+```
+
 See [`docker-compose.yml`](docker-compose.yml) for the full configuration.
 
 ---
@@ -165,6 +177,16 @@ MedEval/
 │   │   └── App.tsx             single-page UI
 │   ├── nginx.conf
 │   └── Dockerfile              multi-stage (Node build → Nginx)
+├── harness/                    Phase 2 — evaluation harness (PyPI package)
+│   ├── src/medeval_harness/
+│   │   ├── cases.py            case schema + dataset loader
+│   │   ├── runner.py           HTTP client that calls the agent
+│   │   ├── scorer.py           safety-aware metrics (under/over-triage)
+│   │   ├── report.py           rich terminal + JSON reports
+│   │   ├── cli.py              `medeval-harness evaluate ...`
+│   │   └── data/esi_cases.json 50 cases from the AHRQ handbook
+│   └── pyproject.toml
+├── .github/workflows/eval.yml  CI: auto-eval, fail-under threshold
 ├── docs/
 │   └── esi-handbook-v4.pdf     source of truth
 └── docker-compose.yml
@@ -172,10 +194,38 @@ MedEval/
 
 ---
 
+## 🧪 Evaluation Harness (`medeval-harness`)
+
+A standalone, **PyPI-published** package that scores the agent against a 50-case dataset
+built from the worked examples in the AHRQ handbook (chapters 9–10, with official ESI answers).
+
+```bash
+pip install medeval-harness
+medeval-harness evaluate --api-url https://medeval.rajkumarai.dev/api --api-key <key>
+```
+
+Unlike a generic accuracy benchmark, the harness reports **safety-aware metrics** — because
+in triage, the direction of an error matters more than the rate:
+
+| Metric | Baseline | After prompt tuning |
+|---|---|---|
+| Exact accuracy | 66% | 68% |
+| **Under-triage rate** (marked *less* urgent than reality — dangerous) | **20%** | **10%** |
+| Over-triage rate (marked *more* urgent — safe, wasteful) | 14% | 22% |
+
+The tuning deliberately traded under-triage for over-triage — the *safe* direction in medicine.
+Tuning was stopped at this point on purpose: pushing accuracy higher would have meant overfitting
+the eval set. A proper held-out test set is noted as future work.
+
+The harness runs in **GitHub Actions** on every change to the agent, rules, or dataset, and
+**fails the build if exact accuracy drops below 60%** — catching triage regressions automatically.
+
+---
+
 ## 🗺️ Roadmap
 
-- **Phase 1** ✅ Live triage app (rules engine + LLM extraction + LLM explanation + UI + deploy)
-- **Phase 2** ⬜ Evaluation harness — 50-case ESI dataset, CI-scored on safety/hallucination/accuracy, published as `medeval-harness` on PyPI
+- **Phase 1** ✅ Live triage app (rules engine + LLM extraction + LLM explanation + UI + HTTPS deploy)
+- **Phase 2** ✅ Evaluation harness — 50-case ESI dataset, safety-aware scoring, GitHub Actions CI, published as [`medeval-harness`](https://pypi.org/project/medeval-harness/) on PyPI
 - **Phase 3** ⬜ Multi-provider LLM router (Claude, GPT, Gemini) with cost dashboard. Deterministic rules published as `triage-rules` on PyPI.
 
 ---
