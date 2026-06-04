@@ -49,7 +49,7 @@ rules:
 
   - rule_id: A2_apneic
     esi_level: 1
-    descision_point: A
+    decision_point: A
     category: clinical_condition
     trigger:
       field: is_apneic
