@@ -12,11 +12,9 @@
 
 ---
 
-## 🌐 Live Demo
+## 🌐 Demo
 
-**Try it:** [https://medeval.rajkumarai.dev](https://medeval.rajkumarai.dev) 🔒
-
-> The demo is gated by an API key. Reach out if you'd like the key to try it.
+The hosted demo (previously at `medeval.rajkumarai.dev`) is currently offline. To run it yourself, see [Local Development](#-local-development).
 
 ![MedEval Patient View](docs/screenshot-patient.png)
 
@@ -201,7 +199,8 @@ built from the worked examples in the AHRQ handbook (chapters 9–10, with offic
 
 ```bash
 pip install medeval-harness
-medeval-harness evaluate --api-url https://medeval.rajkumarai.dev/api --api-key <key>
+# point --api-url at a running backend (see Local Development)
+medeval-harness evaluate --api-url http://localhost:8000 --api-key <key>
 ```
 
 Unlike a generic accuracy benchmark, the harness reports **safety-aware metrics** — because
